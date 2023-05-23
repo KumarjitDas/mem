@@ -19,11 +19,12 @@ BIN_DIR = $(BUILD_DIR)/bin
 
 TEST_SRC_DIR = tests
 TEST_OUTPUT_DIR = tests
+TEST_PREFIX = test_
 
 TEST_NAMES = allocate allocate2
 TEST_OBJECTS = $(addprefix $(BIN_DIR)/$(TEST_OUTPUT_DIR)/, $(addsuffix .o, $(TEST_NAMES)))
 TEST_EXECUTABLES = $(addprefix $(BIN_DIR)/$(TEST_OUTPUT_DIR)/, $(TEST_NAMES))
-RUNNABLE_TESTS = $(addsuffix _test, $(TEST_NAMES))
+RUNNABLE_TESTS = $(addprefix $(TEST_PREFIX), $(TEST_NAMES))
 
 all: $(LIB_PATH).a
 
@@ -41,8 +42,8 @@ $(BIN_DIR)/$(LIB_NAME).o: $(SRC_DIR)/$(LIB_NAME).c $(INCLUDE_DIR)/$(LIB_NAME).h 
 
 test-run: $(RUNNABLE_TESTS)
 
-$(RUNNABLE_TESTS): %_test: $(BIN_DIR)/$(TEST_OUTPUT_DIR)/%
-	./$(BIN_DIR)/$<
+$(RUNNABLE_TESTS): $(TEST_PREFIX)%: $(BIN_DIR)/$(TEST_OUTPUT_DIR)/%
+	./$<
 
 test-build: $(TEST_EXECUTABLES)
 
