@@ -1,0 +1,49 @@
+# file: add_sources_to_target.cmake
+# author: Kumarjit Das
+# date: 2024-07-04
+# brief: MEM library cmake library configuration file.
+
+# BSD 2-Clause License
+#
+# Copyright (c) 2024, Kumarjit Das
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice, this
+# list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright notice,
+# this list of conditions and the following disclaimer in the documentation
+# and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+write_status("Adding sources to the main library target.")
+
+# Setting the full path to sources directories
+set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
+
+# Adding the include file to the main target
+set(INCLUDE_FILE "${INCLUDE_DIR}/mem.h")
+target_sources(${MEM_LIBRARY_NAME} PRIVATE ${INCLUDE_FILE})
+
+# Adding the source files to the main target
+set(SRC_FILES "${SRC_DIR}/mem.c")
+target_sources(${MEM_LIBRARY_NAME} PRIVATE ${SRC_FILES})
+
+# Setting the install destination for include and source file
+install(FILES ${INCLUDE_FILE} DESTINATION "include")
+install(FILES ${SRC_FILES} DESTINATION "src")

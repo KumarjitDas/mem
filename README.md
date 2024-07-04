@@ -1,7 +1,7 @@
 
 # MEM
 
-MEM is a simple, header-only C library designed to provide compile-time system information. This project targets both Windows and GNU/Linux (32-bit and 64-bit) platforms. The library aims to help developers easily allocate, reallocate, and free memory with or without size information.
+MEM is a simple C library designed to provide functionality for memory allocations with/without size information. This project targets both Windows and GNU/Linux (32-bit and 64-bit) platforms. The library aims to help developers easily allocate, reallocate, and free memory with or without size information.
 
 ## Table of Contents
 
@@ -31,6 +31,10 @@ TODO
 TODO
 
 ### Example
+
+TODO
+
+### Dependency
 
 TODO
 
