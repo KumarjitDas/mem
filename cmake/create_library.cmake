@@ -3,7 +3,7 @@
 # date: 2024-07-04
 # brief: MEM library cmake library configuration file.
 
-# BSD 2-Clause License
+# License:
 #
 # Copyright (c) 2024, Kumarjit Das
 # All rights reserved.
@@ -30,10 +30,12 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
+write_status("Creating library: ${MEM_LIBRARY_NAME}.")
+
 # Adding the main library
 add_library(${MEM_LIBRARY_NAME} "")
+target_compile_definitions(${MEM_LIBRARY_NAME} INTERFACE KD_DLL=1)
 target_link_libraries(${MEM_LIBRARY_NAME} INTERFACE KDAPI::kdapi KDAPI::types)
-write_status("Creating library: ${MEM_LIBRARY_NAME}.")
 
 # Setting an alias in `MEM` namespace
 add_library("KDAPI::${MEM_LIBRARY_NAME}" ALIAS ${MEM_LIBRARY_NAME})

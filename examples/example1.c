@@ -42,8 +42,5 @@ int main(int argc, char **argv)
 {
   (void) argc;
   (void) argv;
-
-  (void) printf("testFunc value: " FMTSP_I32 "\n", testFunc(69));
-
   return 0;
 }

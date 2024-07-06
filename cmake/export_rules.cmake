@@ -3,7 +3,7 @@
 # date: 2024-07-04
 # brief: MEM library cmake export rules file.
 
-# BSD 2-Clause License
+# License:
 #
 # Copyright (c) 2024, Kumarjit Das
 # All rights reserved.

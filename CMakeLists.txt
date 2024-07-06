@@ -1,9 +1,9 @@
 # file: CMakeLists.txt
 # author: Kumarjit Das
-# date: 2024-07-04
+# date: 2024-07-07
 # brief: MEM library main cmake file.
 
-# BSD 2-Clause License
+# License:
 #
 # Copyright (c) 2024, Kumarjit Das
 # All rights reserved.
@@ -40,7 +40,7 @@ project(${MEM_PROJECT_NAME}
   VERSION      "${${MEM_LIBRARY_NAME_UPPER}_VERSION}"
   DESCRIPTION  "${${MEM_PROJECT_NAME_UPPER}_DESCRIPTION}"
   HOMEPAGE_URL "https://github.com/KumarjitDas/mem.git"
-  LANGUAGES    "C")
+  LANGUAGES    C)
 
 # Validate target platform
 include("CMake/validate_target_platform.cmake")
@@ -86,6 +86,9 @@ include("CMake/package_configuration.cmake")
 
 # Install all non-project files
 include("CMake/install_nonproject_files.cmake")
+
+# Add tests for the target
+include("CMake/include_tests.cmake")
 
 # Adding the `Examples` directories
 add_subdirectory("examples")

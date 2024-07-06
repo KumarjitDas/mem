@@ -1,7 +1,7 @@
 /**
  * @file mem.c
  * @author Kumarjit Das
- * @date 2024-07-04
+ * @date 2024-07-07
  * @version @KDAPI_VERSION_MAJOR@.@KDAPI_VERSION_MINOR@.@KDAPI_VERSION_PATCH@
  * @brief Main source file of the MEM library.
  */
@@ -34,16 +34,159 @@
  */
 
 
-#include "mem_version.h"
+#define KD_BUILDING_LIB 1
 #include "mem.h"
 
+#include <stdio.h>
+#include <stdlib.h>
 
-i32 testFunc(i32 val)
+
+MEMAPI(bool) kd_mem__func_memAlloc_(void* dst, i32 sz, const char* file, i32 line, FILE* f)
 {
-  return val * 3;
+  (void) dst;
+  (void) sz;
+  (void) file;
+  (void) line;
+  return MEM_FAILURE;
 }
 
-u32 testFunc2(i32 val1, u32 val2)
+MEMAPI(bool) kd_mem__func_memRealloc_(void* dst, void* src, i32 sz, const char* file, i32 line, FILE* f)
 {
-  return val2 - (u32) val1;
+  (void) dst;
+  (void) src;
+  (void) sz;
+  (void) file;
+  (void) line;
+  return MEM_FAILURE;
+}
+
+MEMAPI(bool) kd_mem__func_memFree_(void* dst, const char* file, i32 line, FILE* f)
+{
+  (void) dst;
+  (void) file;
+  (void) line;
+  return MEM_FAILURE;
+}
+
+MEMAPI(bool) kd_mem__func_memAllocWithSizeInfo_(void* dst, i32 sz, const char* file, i32 line, FILE* f)
+{
+  (void) dst;
+  (void) sz;
+  (void) file;
+  (void) line;
+  return MEM_FAILURE;
+}
+
+MEMAPI(bool) kd_mem__func_memReallocWithSizeInfo_(void* dst, void* src, i32 sz, const char* file, i32 line, FILE* f)
+{
+  (void) dst;
+  (void) src;
+  (void) sz;
+  (void) file;
+  (void) line;
+  return MEM_FAILURE;
+}
+
+MEMAPI(bool) kd_mem__func_memFreeWithSizeInfo_(void* dst, const char* file, i32 line, FILE* f)
+{
+  (void) dst;
+  (void) file;
+  (void) line;
+  return MEM_FAILURE;
+}
+
+MEMAPI(bool) memAlloc(void* dst, i32 sz)
+{
+  u8* ptr;
+
+  if (dst == null)
+  {
+    return MEM_FAILURE;
+  }
+
+  if (sz <= 0)
+  {
+    *(u8**) dst = null;
+    return MEM_FAILURE;
+  }
+
+  ptr = (u8*) malloc((size_t) sz);
+
+  if (ptr == null)
+  {
+    *(u8**) dst = null;
+    return MEM_FAILURE;
+  }
+
+  *(u8**) dst = ptr;
+
+  return MEM_SUCCESS;
+}
+
+MEMAPI(bool) memRealloc(void* dst, void* src, i32 sz)
+{
+  u8* ptr;
+
+  if (dst == null)
+  {
+    return MEM_FAILURE;
+  }
+
+  *(u8**) dst = null;
+
+  if (src == null)
+  {
+    return MEM_FAILURE;
+  }
+
+  if (sz <= 0)
+  {
+    return MEM_FAILURE;
+  }
+
+  ptr = (u8*) realloc(*(void**) src, (size_t) sz);
+  *(u8**) src = null;
+
+  if (ptr == null)
+  {
+    return MEM_FAILURE;
+  }
+
+  *(u8**) dst = ptr;
+
+  return MEM_SUCCESS;
+}
+
+MEMAPI(bool) memFree(void* dst)
+{
+  if (dst == null)
+  {
+    return MEM_FAILURE;
+  }
+
+  free(*(u8**) dst);
+  *(u8**) dst = null;
+
+  return MEM_SUCCESS;
+}
+
+MEMAPI(bool) memAllocWithSizeInfo(void* dst, i32 sz)
+{
+  (void) dst;
+  (void) sz;
+  return MEM_FAILURE;
+}
+
+MEMAPI(bool) memReallocWithSizeInfo(void* dst, void* src, i32 sz)
+{
+  (void) dst;
+  (void) src;
+  (void) sz;
+  return MEM_FAILURE;
+}
+
+MEMAPI(bool) memFreeWithSizeInfo(void* dst)
+{
+  (void) dst;
+  return MEM_FAILURE;
 }

@@ -1,9 +1,9 @@
 # file: add_external_libs.cmake
 # author: Kumarjit Das
-# date: 2024-07-04
+# date: 2024-07-07
 # brief: MEM library cmake external libraries fetcher configuration.
 
-# BSD 2-Clause License
+# License:
 #
 # Copyright (c) 2024, Kumarjit Das
 # All rights reserved.
@@ -35,10 +35,32 @@ include(FetchContent)
 
 write_status("Adding external libraries.")
 
+set(_GTEST_LIB googletest)
+set(_GTEST_VER 1.14.0)
 set(_KDAPI_LIB kdapi)
-set(_KDAPI_VER 1.1.0)
+set(_KDAPI_VER 1.2.0)
 set(_TYPES_LIB types)
-set(_TYPES_VER 1.1.0)
+set(_TYPES_VER 1.2.0)
+
+# Check if the parent project is this project or not
+if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
+  write_status("Enabling C++ compilation as '${_GTEST_LIB}' requires it.")
+  enable_language(CXX)
+
+  write_status("Fetching external library: ${_GTEST_LIB}")
+
+  FetchContent_Declare(
+    ${_GTEST_LIB}
+    URL                        "https://github.com/google/${_GTEST_LIB}/archive/f8d7d77c06936315286eb55f8de22cd23c188571.zip"
+    SOURCE_DIR                 ${CMAKE_BINARY_DIR}/external/${_GTEST_LIB}
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+  )
+
+  # For Windows: Prevent overriding the parent project's compiler/linker settings
+  set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+  FetchContent_MakeAvailable(${_GTEST_LIB})
+endif()
 
 # Try to find the kdapi and types package first
 find_package(${_KDAPI_LIB} ${_KDAPI_VER} QUIET)

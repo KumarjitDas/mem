@@ -3,7 +3,7 @@
 # date: 2024-07-04
 # brief: MEM library cmake project setup file.
 
-# BSD 2-Clause License
+# License:
 #
 # Copyright (c) 2024, Kumarjit Das
 # All rights reserved.
@@ -84,6 +84,9 @@ write_status("Current user path: ${MEM_CURRENT_USER_PATH}")
 
 # Getting the build directory name from current binary directory
 string(REPLACE "${CMAKE_SOURCE_DIR}/" "" MEM_BUILD_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+
+# By default build shared libraries
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 # Setting the build library type name
 if(BUILD_SHARED_LIBS)

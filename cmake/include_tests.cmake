@@ -1,7 +1,7 @@
-# file: set_build_postfixes.cmake
+# file: include_tests.cmake
 # author: Kumarjit Das
-# date: 2024-07-04
-# brief: MEM library cmake build postfixes configuration file.
+# date: 2024-07-07
+# brief: MEM library cmake build configuration file.
 
 # License:
 #
@@ -30,19 +30,15 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-write_status("Setting build postfixes.")
+# Check if the parent project is this project or not
+if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
+  write_status("Enabling testing.")
 
-# Add `-s` as postfix to the build output when building static libraries
-if(NOT BUILD_SHARED_LIBS)
-  set(MEM_STATIC_POSTFIX "-s")
+  # GoogleTest requires at least C++14
+  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+  # Enable testing in the tests directory
+  enable_testing()
+  add_subdirectory("tests")
 endif()
-
-# Setting build postfixes for different build configurations
-set_target_properties(
-  ${MEM_LIBRARY_NAME}    PROPERTIES
-  OUTPUT_NAME            "${MEM_LIBRARY_NAME}"
-  DEBUG_POSTFIX          "${MEM_STATIC_POSTFIX}-d"
-  RELEASE_POSTFIX        "${MEM_STATIC_POSTFIX}"
-  MINSIZEREL_POSTFIX     "${MEM_STATIC_POSTFIX}-mr"
-  RELWITHDEBINFO_POSTFIX "${MEM_STATIC_POSTFIX}-rd"
-)

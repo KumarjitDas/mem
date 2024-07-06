@@ -1,7 +1,7 @@
 # file: CMakeLists.txt
 # author: Kumarjit Das
-# date: 2024-07-04
-# brief: MEM library examples cmake file.
+# date: 2024-07-07
+# brief: MEM library tests cmake file.
 
 # License:
 #
@@ -30,35 +30,36 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-write_status("'examples' subdirectory added.")
+write_status("'tests' subdirectory added.")
 
-# Get all .c files in the directory
-file(GLOB ALL_C_FILES "*.c")
+include(GoogleTest)
+
+# Get all .cpp files in the directory
+file(GLOB ALL_C_FILES "*.cpp")
 
 # Initialize an empty list to store file names without extensions
-set(EXAMPLE_LIST "")
+set(TEST_LIST "")
 
 # Loop over each file and extract the name without extension
 foreach(FILE_PATH ${ALL_C_FILES})
   get_filename_component(FILE_NAME_WE ${FILE_PATH} NAME_WE)
-  list(APPEND EXAMPLE_LIST ${FILE_NAME_WE})
+  list(APPEND TEST_LIST ${FILE_NAME_WE})
 endforeach()
 
 # Loop through each item in the examples list
-foreach(EXAMPLE_ITEM ${EXAMPLE_LIST})
+foreach(TEST_ITEM ${TEST_LIST})
   # Attaching library name in front of example item
-  set(EXAMPLE_TARGET "${MEM_PROJECT_NAME_LOWER}-${EXAMPLE_ITEM}")
+  set(TEST_TARGET "${MEM_PROJECT_NAME_LOWER}-${TEST_ITEM}")
 
-  # Build an executable from the `EXAMPLE_ITEM` source
-  add_executable(${EXAMPLE_TARGET} "${EXAMPLE_ITEM}.c")
+  # Build an executable from the `TEST_ITEM` source
+  add_executable(${TEST_TARGET} "${TEST_ITEM}.cpp")
 
   # Link the built executable with the main library
-  target_link_libraries(${EXAMPLE_TARGET} PRIVATE "KDAPI::${MEM_LIBRARY_NAME}")
+  target_link_libraries(${TEST_TARGET} PRIVATE "KDAPI::${MEM_LIBRARY_NAME}" GTest::gtest_main)
 
   # Setting build postfixes for different build configurations
   set_target_properties(
-    ${EXAMPLE_TARGET}      PROPERTIES
-    C_STANDARD             90
+    ${TEST_TARGET}         PROPERTIES
     DEBUG_POSTFIX          "${MEM_STATIC_POSTFIX}-d"
     RELEASE_POSTFIX        "${MEM_STATIC_POSTFIX}"
     MINSIZEREL_POSTFIX     "${MEM_STATIC_POSTFIX}-mr"
@@ -67,15 +68,14 @@ foreach(EXAMPLE_ITEM ${EXAMPLE_LIST})
 
   # Check if the project builds shared libraries
   if(BUILD_SHARED_LIBS)
-    # If the project builds shared libraries then set the static and shared
-    # library directory to lib and executables directory to bin
     set_target_properties(
-      ${EXAMPLE_TARGET}        PROPERTIES
+      ${TEST_TARGET}           PROPERTIES
       ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
       LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
       RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
     )
   endif()
 
-  write_status("Adding example: ${EXAMPLE_TARGET}")
+  gtest_discover_tests(${TEST_TARGET})
+  write_status("Adding test: ${TEST_TARGET}")
 endforeach()
